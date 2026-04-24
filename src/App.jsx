@@ -508,7 +508,7 @@ function ManiMood({powders, onClose}) {
     const t = SKIN_TONES[toneIdx];
     const np = NAILS[shape]?.[length] || NAILS["Almond"]["Medium"];
     const isImg = nc && (nc.startsWith("data:") || nc.startsWith("http"));
-    const patId = `pat_${key}`;
+    const clipId = `clip_${key}`;
     return (
       <svg width="60" height="120" viewBox="0 -20 60 150"
         style={{overflow:"visible",cursor:"pointer",filter:"drop-shadow(0 2px 5px rgba(0,0,0,.12))"}}
@@ -521,14 +521,22 @@ function ManiMood({powders, onClose}) {
             <stop offset="82%" stopColor={t.mid}/>
             <stop offset="100%" stopColor={t.shadow}/>
           </linearGradient>
-          {isImg && (
-            <pattern id={patId} x="0" y="-20" width="60" height="150" patternUnits="userSpaceOnUse">
-              <image href={nc} x="0" y="-20" width="60" height="150" preserveAspectRatio="xMidYMid slice"/>
-            </pattern>
-          )}
+          <clipPath id={clipId}>
+            <path d={np}/>
+          </clipPath>
         </defs>
         <path d={FP} fill={`url(#sk${key})`}/>
-        <path d={np} fill={isImg ? `url(#${patId})` : (nc||"#f5e8e4")}/>
+        {isImg ? (
+          <>
+            <path d={np} fill="rgba(0,0,0,0.05)"/>
+            <image href={nc} x="5" y="-15" width="50" height="100"
+              preserveAspectRatio="xMidYMid slice"
+              clipPath={`url(#${clipId})`}
+              style={{crossOrigin:"anonymous"}}/>
+          </>
+        ) : (
+          <path d={np} fill={nc||"#f5e8e4"}/>
+        )}
       </svg>
     );
   }
