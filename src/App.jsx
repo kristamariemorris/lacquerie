@@ -761,11 +761,10 @@ function ManiMood({powders, onClose}) {
                       <div key={`sb-${i}`} onClick={()=>setActivePalette(s.image_url||s.hex_color||"#f5dfd8")}
                         style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",width:46}}>
                         <div style={{width:38,height:38,borderRadius:10,overflow:"hidden",
-                          background:s.hex_color||"#f5dfd8",
+                          background:s.image_url ? `url(${s.image_url}) center/cover` : (s.hex_color||"#f5dfd8"),
                           border:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
                           boxShadow:"0 2px 5px rgba(0,0,0,.08)",
                           transform:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
-                          {s.image_url&&<img src={s.image_url} alt="" crossOrigin="anonymous" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} onError={e=>e.target.style.display="none"}/>}
                         </div>
                         <span style={{fontSize:8,color:"#c9957e",fontFamily:"'Spring Flowers',cursive",
                           maxWidth:44,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
