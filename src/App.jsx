@@ -362,7 +362,7 @@ function ManiMood({powders, onClose}) {
     // Load all Revel shades from Supabase
     const loadSwatches = async () => {
       try {
-        const url = `${SUPABASE_URL}/rest/v1/swatches?select=id,product_number,name,brand,hex_color,image_url,color_family,consistency,special_effects,collection&limit=2000`;
+        const url = `${SUPABASE_URL}/rest/v1/swatches?select=*&limit=2000`;
         const res = await fetch(url, {
           headers: { 
             apikey: SUPABASE_KEY, 
