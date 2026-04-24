@@ -754,7 +754,7 @@ function ManiMood({powders, onClose}) {
                       const matchSearch = search===""||s.name.toLowerCase().includes(search.toLowerCase())||String(s.product_number).toLowerCase().includes(search.toLowerCase());
                       const matchFilter = revelFilter==="All"||
                         (s.consistency&&s.consistency.toLowerCase().includes(revelFilter.toLowerCase()))||
-                        (s.special_effects&&s.special_effects.toLowerCase().includes(revelFilter.toLowerCase()));
+                        (s.special_effect&&s.special_effect.toLowerCase().includes(revelFilter.toLowerCase()));
                       return matchSearch && matchFilter;
                     }).map((s,i)=>(
                       <div key={`sb-${i}`} onClick={()=>setActivePalette(s.image_url||s.hex_color||"#f5dfd8")}
