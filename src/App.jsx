@@ -742,7 +742,7 @@ function ManiMood({powders, onClose}) {
                           border:activePalette===s.dataUrl?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
                           boxShadow:"0 2px 5px rgba(0,0,0,.08)",
                           transform:activePalette===s.dataUrl?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
-                          <img src={s.dataUrl} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                          <img src={s.dataUrl} alt="" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
                         </div>
                         <span style={{fontSize:8,color:"#c9957e",fontFamily:"'Spring Flowers',cursive",
                           maxWidth:44,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
@@ -765,7 +765,7 @@ function ManiMood({powders, onClose}) {
                           border:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
                           boxShadow:"0 2px 5px rgba(0,0,0,.08)",
                           transform:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
-                          {s.image_url&&<img src={s.image_url} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>e.target.style.display="none"}/>}
+                          {s.image_url&&<img src={s.image_url} alt="" crossOrigin="anonymous" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} onError={e=>e.target.style.display="none"}/>}
                         </div>
                         <span style={{fontSize:8,color:"#c9957e",fontFamily:"'Spring Flowers',cursive",
                           maxWidth:44,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
