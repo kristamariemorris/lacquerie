@@ -532,7 +532,9 @@ function ManiMood({powders, onClose}) {
             <image href={nc} x="0" y="-20" width="60" height="110"
               preserveAspectRatio="xMidYMid slice"
               clipPath={`url(#${clipId})`}
-              crossOrigin="anonymous"/>
+              crossOrigin="anonymous">
+              <title></title>
+            </image>
           </>
         ) : (
           <path d={np} fill={nc||"#f5e8e4"}/>
