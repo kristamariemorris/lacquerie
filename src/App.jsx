@@ -362,7 +362,7 @@ function ManiMood({powders, onClose}) {
     // Load all Revel shades from Supabase
     const loadSwatches = async () => {
       try {
-        const url = `${SUPABASE_URL}/rest/v1/swatches?select=*&limit=2000`;
+        const url = `${SUPABASE_URL}/rest/v1/swatches?select=id,product_number,name,brand,hex_color,image_url,color_family,consistency,special_effects,collection&limit=2000`;
         const res = await fetch(url, {
           headers: { 
             apikey: SUPABASE_KEY, 
@@ -529,10 +529,10 @@ function ManiMood({powders, onClose}) {
         {isImg ? (
           <>
             <path d={np} fill="rgba(0,0,0,0.05)"/>
-            <image href={nc} x="5" y="-15" width="50" height="100"
+            <image href={nc} x="0" y="-20" width="60" height="110"
               preserveAspectRatio="xMidYMid slice"
               clipPath={`url(#${clipId})`}
-              style={{crossOrigin:"anonymous"}}/>
+              crossOrigin="anonymous"/>
           </>
         ) : (
           <path d={np} fill={nc||"#f5e8e4"}/>
@@ -761,9 +761,9 @@ function ManiMood({powders, onClose}) {
                         style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",width:46}}>
                         <div style={{width:38,height:38,borderRadius:10,overflow:"hidden",
                           background:s.hex_color||"#f5dfd8",
-                          border:activePalette===(s.hex_color||"#f5dfd8")?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
+                          border:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
                           boxShadow:"0 2px 5px rgba(0,0,0,.08)",
-                          transform:activePalette===(s.hex_color||"#f5dfd8")?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
+                          transform:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
                           {s.image_url&&<img src={s.image_url} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>e.target.style.display="none"}/>}
                         </div>
                         <span style={{fontSize:8,color:"#c9957e",fontFamily:"'Spring Flowers',cursive",
