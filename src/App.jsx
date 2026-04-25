@@ -543,11 +543,8 @@ function ManiMood({powders, onClose}) {
     const t = SKIN_TONES[toneIdx];
     const np = NAILS[shape]?.[length] || NAILS["Almond"]["Medium"];
     const isImg = nc && (nc.startsWith("data:") || (nc.startsWith("http") && nc.includes("supabase")));
-    const [fillColor, setFillColor] = useState(isImg ? "#f5e8e4" : (nc||"#f5e8e4"));
-    useEffect(()=>{
-      if(isImg) sampleBottomLeftColor(nc, setFillColor);
-      else setFillColor(nc||"#f5e8e4");
-    },[nc]);
+    const clipId = `clip_${fingerKey}`;
+    const patId = `pat_${fingerKey}`;
     return (
       <svg width="60" height="120" viewBox="0 -20 60 150"
         style={{overflow:"visible",cursor:"pointer",filter:"drop-shadow(0 2px 5px rgba(0,0,0,.12))"}}
@@ -560,9 +557,27 @@ function ManiMood({powders, onClose}) {
             <stop offset="82%" stopColor={t.mid}/>
             <stop offset="100%" stopColor={t.shadow}/>
           </linearGradient>
+          <clipPath id={clipId}>
+            <path d={np}/>
+          </clipPath>
+          {isImg && (
+            <pattern id={patId} patternUnits="userSpaceOnUse" x="0" y="-20" width="60" height="150">
+              {/* Show bottom-left 50% of image: src coords 0,50%->50%,100% mapped to nail space */}
+              <image
+                href={nc}
+                x="0" y="-20"
+                width="120" height="300"
+                preserveAspectRatio="xMinYMax meet"
+              />
+            </pattern>
+          )}
         </defs>
         <path d={FP} fill={`url(#sk${fingerKey})`}/>
-        <path d={np} fill={fillColor}/>
+        {isImg ? (
+          <path d={np} fill={`url(#${patId})`} clipPath={`url(#${clipId})`}/>
+        ) : (
+          <path d={np} fill={nc||"#f5e8e4"}/>
+        )}
       </svg>
     );
   }
