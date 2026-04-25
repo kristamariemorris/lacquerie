@@ -607,8 +607,9 @@ function ManiMood({powders, onClose}) {
                   left:"0px",
                   bottom:"0px",
                   width:"150px",
-                  height:"150px",
-                  objectFit:"fill",
+                  height:"450px",
+                  objectFit:"cover",
+                  objectPosition:"left bottom",
                   display:"block",
                 }}
               />
