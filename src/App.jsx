@@ -505,41 +505,70 @@ function ManiMood({powders, onClose}) {
     </button>
   );
 
-  function makeFinger(key, nc) {
+  // Canvas-based color sampler for swatch images
+  const swatchColorCache = useRef({});
+
+  function sampleBottomLeftColor(url, callback) {
+    if (swatchColorCache.current[url]) { callback(swatchColorCache.current[url]); return; }
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        const size = 80;
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        // Sample the bottom-left 45% of the image (where the Normal swatch sits)
+        const sw = img.naturalWidth * 0.45;
+        const sh = img.naturalHeight * 0.45;
+        ctx.drawImage(img, 0, img.naturalHeight * 0.55, sw, sh, 0, 0, size, size);
+        const data = ctx.getImageData(size*0.1, size*0.1, size*0.8, size*0.8).data;
+        let r=0,g=0,b=0,count=0;
+        for(let i=0;i<data.length;i+=4){
+          if(data[i]>230 && data[i+1]>230 && data[i+2]>230) continue;
+          r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++;
+        }
+        if(count===0){callback("#f5e8e4");return;}
+        const hex="#"+[Math.round(r/count),Math.round(g/count),Math.round(b/count)]
+          .map(v=>v.toString(16).padStart(2,"0")).join("");
+        swatchColorCache.current[url]=hex;
+        callback(hex);
+      } catch { callback("#f5e8e4"); }
+    };
+    img.onerror = ()=>callback("#f5e8e4");
+    img.src = url;
+  }
+
+  function FingerWithSwatch({fingerKey, nc}) {
     const t = SKIN_TONES[toneIdx];
     const np = NAILS[shape]?.[length] || NAILS["Almond"]["Medium"];
     const isImg = nc && (nc.startsWith("data:") || (nc.startsWith("http") && nc.includes("supabase")));
-    const clipId = `clip_${key}`;
+    const [fillColor, setFillColor] = useState(isImg ? "#f5e8e4" : (nc||"#f5e8e4"));
+    useEffect(()=>{
+      if(isImg) sampleBottomLeftColor(nc, setFillColor);
+      else setFillColor(nc||"#f5e8e4");
+    },[nc]);
     return (
       <svg width="60" height="120" viewBox="0 -20 60 150"
         style={{overflow:"visible",cursor:"pointer",filter:"drop-shadow(0 2px 5px rgba(0,0,0,.12))"}}
-        onClick={()=>{ if(activePalette) assignColor(key, activePalette); }}>
+        onClick={()=>{ if(activePalette) assignColor(fingerKey, activePalette); }}>
         <defs>
-          <linearGradient id={`sk${key}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id={`sk${fingerKey}`} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor={t.shadow}/>
             <stop offset="18%" stopColor={t.mid}/>
             <stop offset="50%" stopColor={t.skin}/>
             <stop offset="82%" stopColor={t.mid}/>
             <stop offset="100%" stopColor={t.shadow}/>
           </linearGradient>
-          <clipPath id={clipId}>
-            <path d={np}/>
-          </clipPath>
         </defs>
-        <path d={FP} fill={`url(#sk${key})`}/>
-        {isImg ? (
-          <image
-            href={nc}
-            x="-35" y="30"
-            width="160" height="160"
-            preserveAspectRatio="xMinYMax slice"
-            clipPath={`url(#${clipId})`}
-          />
-        ) : (
-          <path d={np} fill={nc||"#f5e8e4"}/>
-        )}
+        <path d={FP} fill={`url(#sk${fingerKey})`}/>
+        <path d={np} fill={fillColor}/>
       </svg>
     );
+  }
+
+  function makeFinger(key, nc) {
+    return <FingerWithSwatch fingerKey={key} nc={nc}/>;
   }
 
   function MiniNail({nc, shp, lng}) {
