@@ -530,8 +530,8 @@ function ManiMood({powders, onClose}) {
         {isImg ? (
           <image
             href={nc}
-            x="-30" y="10"
-            width="120" height="120"
+            x="-35" y="30"
+            width="160" height="160"
             preserveAspectRatio="xMinYMax slice"
             clipPath={`url(#${clipId})`}
           />
