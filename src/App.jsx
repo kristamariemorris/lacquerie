@@ -529,11 +529,10 @@ function ManiMood({powders, onClose}) {
         <path d={FP} fill={`url(#sk${key})`}/>
         {isImg ? (
           <>
-            <path d={np} fill="#f5e8e4"/>
-            <foreignObject x="-10" y="-40" width="200" height="200" clipPath={`url(#${clipId})`} style={{overflow:"hidden"}}>
+            <foreignObject x="0" y="0" width="60" height="130" clipPath={`url(#${clipId})`} style={{overflow:"hidden"}}>
               <img xmlns="http://www.w3.org/1999/xhtml"
                 src={nc} alt=""
-                style={{width:"200px",height:"200px",objectFit:"cover",objectPosition:"left 20%",display:"block"}}/>
+                style={{width:"60px",height:"130px",objectFit:"cover",objectPosition:"bottom left",display:"block"}}/>
             </foreignObject>
           </>
         ) : (
