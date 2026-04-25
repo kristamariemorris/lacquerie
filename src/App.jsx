@@ -356,6 +356,7 @@ function ManiMood({powders, onClose}) {
   const [colPanel, setColPanel] = useState("Revel Nail");
   const [revelFilter, setRevelFilter] = useState("All");
   const [sbShades, setSbShades] = useState([]);
+  const [loadedImgs, setLoadedImgs] = useState(new Set());
 
   // Load additional swatches from Supabase
   useEffect(()=>{
@@ -758,13 +759,18 @@ function ManiMood({powders, onClose}) {
                         (s.special_effect&&s.special_effect.toLowerCase().includes(revelFilter.toLowerCase()));
                       return matchSearch && matchFilter;
                     }).map((s,i)=>(
-                      <div key={`sb-${i}`} onClick={()=>setActivePalette(s.image_url ? s.image_url : (s.hex_color||"#f5dfd8"))}
+                      <div key={`sb-${i}`} onClick={()=>setActivePalette(loadedImgs.has(s.image_url) ? s.image_url : (s.hex_color||"#f5dfd8"))}
                         style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",width:46}}>
                         <div style={{width:38,height:38,borderRadius:10,overflow:"hidden",
-                          background:s.image_url ? `url(${s.image_url}) center/cover no-repeat, ${s.hex_color||'#f5dfd8'}` : (s.hex_color||"#f5dfd8"),
-                          border:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
+                          background:loadedImgs.has(s.image_url) ? `url(${s.image_url}) center/cover no-repeat` : (s.hex_color||"#f5dfd8"),
+                          border:activePalette===(loadedImgs.has(s.image_url)?s.image_url:(s.hex_color||"#f5dfd8"))?"3px solid #d4707a":"1px solid rgba(200,180,170,.35)",
                           boxShadow:"0 2px 5px rgba(0,0,0,.08)",
-                          transform:activePalette===(s.image_url||s.hex_color||"#f5dfd8")?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
+                          transform:activePalette===(loadedImgs.has(s.image_url)?s.image_url:(s.hex_color||"#f5dfd8"))?"scale(1.1)":"scale(1)",transition:"all .13s"}}>
+                          {s.image_url && !loadedImgs.has(s.image_url) && (
+                            <img src={s.image_url} alt="" style={{display:"none"}}
+                              onLoad={()=>setLoadedImgs(prev=>new Set([...prev, s.image_url]))}
+                              onError={()=>{}}/>
+                          )}
                         </div>
                         <span style={{fontSize:8,color:"#c9957e",fontFamily:"'Spring Flowers',cursive",
                           maxWidth:44,textAlign:"center",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
