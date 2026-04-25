@@ -586,14 +586,14 @@ function ManiMood({powders, onClose}) {
         {/* foreignObject overlays actual photo texture on top once image loads */}
         {isImg && (
           <foreignObject
-            x="0" y="-20" width="60" height="150"
+            x="0" y="-20" width="60" height="450"
             clipPath={`url(#${clipId})`}
             style={{overflow:"hidden", mixBlendMode:"normal"}}
           >
             <div
               xmlns="http://www.w3.org/1999/xhtml"
               style={{
-                width:"60px", height:"150px",
+                width:"60px", height:"450px",
                 overflow:"hidden", position:"relative",
                 backgroundColor: nailFill,
               }}
