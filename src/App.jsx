@@ -507,7 +507,7 @@ function ManiMood({powders, onClose}) {
   function makeFinger(key, nc) {
     const t = SKIN_TONES[toneIdx];
     const np = NAILS[shape]?.[length] || NAILS["Almond"]["Medium"];
-    const isImg = nc && (nc.startsWith("data:") || nc.startsWith("http"));
+    const isImg = nc && (nc.startsWith("data:") || (nc.startsWith("http") && nc.includes("supabase")));
     const clipId = `clip_${key}`;
     return (
       <svg width="60" height="120" viewBox="0 -20 60 150"
@@ -758,7 +758,7 @@ function ManiMood({powders, onClose}) {
                         (s.special_effect&&s.special_effect.toLowerCase().includes(revelFilter.toLowerCase()));
                       return matchSearch && matchFilter;
                     }).map((s,i)=>(
-                      <div key={`sb-${i}`} onClick={()=>setActivePalette(s.image_url||s.hex_color||"#f5dfd8")}
+                      <div key={`sb-${i}`} onClick={()=>setActivePalette(s.image_url ? s.image_url : (s.hex_color||"#f5dfd8"))}
                         style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",width:46}}>
                         <div style={{width:38,height:38,borderRadius:10,overflow:"hidden",
                           background:s.image_url ? `url(${s.image_url}) center/cover no-repeat, ${s.hex_color||'#f5dfd8'}` : (s.hex_color||"#f5dfd8"),
