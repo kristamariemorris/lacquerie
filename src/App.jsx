@@ -562,9 +562,7 @@ function ManiMood({powders, onClose}) {
       imgRef.current = img;
     },[nc]);
 
-    const nailFill = isImg
-      ? (sampledColor || "#f5e8e4")
-      : (nc||"#f5e8e4");
+    const nailFill = isImg ? (sampledColor || "#f5e8e4") : (nc||"#f5e8e4");
 
     return (
       <svg width="60" height="120" viewBox="0 -20 60 150"
@@ -583,7 +581,41 @@ function ManiMood({powders, onClose}) {
           </clipPath>
         </defs>
         <path d={FP} fill={`url(#sk${fingerKey})`}/>
+        {/* Solid color fallback always rendered */}
         <path d={np} fill={nailFill}/>
+        {/* foreignObject overlays actual photo texture on top once image loads */}
+        {isImg && (
+          <foreignObject
+            x="0" y="-20" width="60" height="150"
+            clipPath={`url(#${clipId})`}
+            style={{overflow:"hidden", mixBlendMode:"normal"}}
+          >
+            <div
+              xmlns="http://www.w3.org/1999/xhtml"
+              style={{
+                width:"60px", height:"150px",
+                overflow:"hidden", position:"relative",
+                backgroundColor: nailFill,
+              }}
+            >
+              <img
+                xmlns="http://www.w3.org/1999/xhtml"
+                src={nc}
+                alt=""
+                style={{
+                  position:"absolute",
+                  left:"-50%",
+                  bottom:"0px",
+                  width:"200%",
+                  height:"200%",
+                  objectFit:"cover",
+                  objectPosition:"left bottom",
+                  display:"block",
+                }}
+              />
+            </div>
+          </foreignObject>
+        )}
       </svg>
     );
   }
