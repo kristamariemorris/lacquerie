@@ -583,39 +583,6 @@ function ManiMood({powders, onClose}) {
         <path d={FP} fill={`url(#sk${fingerKey})`}/>
         {/* Solid color fallback always rendered */}
         <path d={np} fill={nailFill}/>
-        {/* foreignObject overlays actual photo texture on top once image loads */}
-        {isImg && (
-          <foreignObject
-            x="0" y="-20" width="60" height="450"
-            clipPath={`url(#${clipId})`}
-            style={{overflow:"hidden", mixBlendMode:"normal"}}
-          >
-            <div
-              xmlns="http://www.w3.org/1999/xhtml"
-              style={{
-                width:"60px", height:"450px",
-                overflow:"hidden", position:"relative",
-                backgroundColor: nailFill,
-              }}
-            >
-              <img
-                xmlns="http://www.w3.org/1999/xhtml"
-                src={nc}
-                alt=""
-                style={{
-                  position:"absolute",
-                  left:"0px",
-                  bottom:"0px",
-                  width:"150px",
-                  height:"450px",
-                  objectFit:"cover",
-                  objectPosition:"left bottom",
-                  display:"block",
-                }}
-              />
-            </div>
-          </foreignObject>
-        )}
       </svg>
     );
   }
