@@ -544,7 +544,6 @@ function ManiMood({powders, onClose}) {
     const np = NAILS[shape]?.[length] || NAILS["Almond"]["Medium"];
     const isImg = nc && (nc.startsWith("data:") || (nc.startsWith("http") && nc.includes("supabase")));
     const clipId = `clip_${fingerKey}`;
-    const patId = `pat_${fingerKey}`;
     return (
       <svg width="60" height="120" viewBox="0 -20 60 150"
         style={{overflow:"visible",cursor:"pointer",filter:"drop-shadow(0 2px 5px rgba(0,0,0,.12))"}}
@@ -560,21 +559,18 @@ function ManiMood({powders, onClose}) {
           <clipPath id={clipId}>
             <path d={np}/>
           </clipPath>
-          {isImg && (
-            <pattern id={patId} patternUnits="userSpaceOnUse" x="0" y="-20" width="60" height="150">
-              {/* Show bottom-left 50% of image: src coords 0,50%->50%,100% mapped to nail space */}
-              <image
-                href={nc}
-                x="0" y="-20"
-                width="120" height="300"
-                preserveAspectRatio="xMinYMax meet"
-              />
-            </pattern>
-          )}
         </defs>
         <path d={FP} fill={`url(#sk${fingerKey})`}/>
         {isImg ? (
-          <path d={np} fill={`url(#${patId})`} clipPath={`url(#${clipId})`}/>
+          <g clipPath={`url(#${clipId})`}>
+            <rect x="0" y="-20" width="60" height="150" fill="#f5e8e4"/>
+            <image
+              href={nc}
+              x="0" y="-20"
+              width="120" height="300"
+              preserveAspectRatio="xMinYMax slice"
+            />
+          </g>
         ) : (
           <path d={np} fill={nc||"#f5e8e4"}/>
         )}
