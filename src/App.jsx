@@ -604,10 +604,10 @@ function ManiMood({powders, onClose}) {
                 alt=""
                 style={{
                   position:"absolute",
-                  left:"-50%",
-                  bottom:"0px",
-                  width:"200%",
-                  height:"200%",
+                  left:"0px",
+                  bottom:"-20%",
+                  width:"120%",
+                  height:"120%",
                   objectFit:"cover",
                   objectPosition:"left bottom",
                   display:"block",
